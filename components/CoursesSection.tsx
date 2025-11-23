@@ -1,5 +1,7 @@
 'use client';
 
+'use client';
+
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { useCourseStore } from '@/store/useCourseStore';
 import { Check } from 'lucide-react';
@@ -10,31 +12,36 @@ const courses = [
         id: 'frontend',
         title: 'Frontend Development',
         description: 'Master React, Next.js, and modern CSS to build stunning user interfaces.',
-        level: 'Beginner to Advanced'
+        level: 'Beginner to Advanced',
+        price: '15,000 ETB'
     },
     {
         id: 'backend',
         title: 'Backend Development',
         description: 'Build robust APIs and scalable systems with Node.js, Python, and Databases.',
-        level: 'Intermediate'
+        level: 'Intermediate',
+        price: '18,000 ETB'
     },
     {
         id: 'fullstack',
         title: 'Full-Stack Engineering',
         description: 'Become a complete developer. Master both frontend and backend technologies.',
-        level: 'Advanced'
+        level: 'Advanced',
+        price: '25,000 ETB'
     },
     {
         id: 'python',
         title: 'Python for Data Science',
         description: 'Learn Python programming and dive into data analysis and machine learning.',
-        level: 'Beginner'
+        level: 'Beginner',
+        price: '12,000 ETB'
     },
     {
         id: 'cybersecurity',
         title: 'Cybersecurity',
         description: 'Protect systems and networks. Learn ethical hacking and security best practices.',
-        level: 'Intermediate'
+        level: 'Intermediate',
+        price: '20,000 ETB'
     }
 ];
 
@@ -85,8 +92,8 @@ function TiltCard({ children, onClick, isSelected }: { children: React.ReactNode
                 transformStyle: "preserve-3d",
             }}
             className={`relative p-8 rounded-2xl border cursor-pointer transition-colors duration-300 group ${isSelected
-                    ? 'bg-white/10 border-white ring-1 ring-white'
-                    : 'bg-white/5 border-white/10 hover:border-white/30'
+                ? 'bg-white/10 border-white ring-1 ring-white'
+                : 'bg-white/5 border-white/10 hover:border-white/30'
                 }`}
         >
             <div style={{ transform: "translateZ(50px)" }}>
@@ -135,9 +142,12 @@ export default function CoursesSection() {
                                     </div>
                                 )}
 
-                                <div className="mb-4">
+                                <div className="mb-4 flex justify-between items-start">
                                     <span className="text-xs font-semibold tracking-wider text-gray-400 uppercase">
                                         {course.level}
+                                    </span>
+                                    <span className="text-sm font-bold text-green-400">
+                                        {course.price}
                                     </span>
                                 </div>
 
@@ -149,9 +159,14 @@ export default function CoursesSection() {
                                     {course.description}
                                 </p>
 
-                                <div className="flex items-center text-sm font-medium text-white">
-                                    <span>Learn more</span>
-                                    <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+                                <div className="flex items-center justify-between mt-auto">
+                                    <button className="px-4 py-2 bg-white text-black text-sm font-bold rounded-lg hover:bg-gray-200 transition-colors">
+                                        Enroll Now
+                                    </button>
+                                    <div className="flex items-center text-sm font-medium text-white">
+                                        <span>Details</span>
+                                        <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+                                    </div>
                                 </div>
                             </TiltCard>
                         </motion.div>
