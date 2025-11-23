@@ -262,105 +262,115 @@ function TiltCard({ children, onClick, isSelected }: { children: React.ReactNode
 }
 
 function CourseModal({ course, onClose }: { course: typeof courses[0], onClose: () => void }) {
+    // Lock body scroll when modal is open
+    React.useEffect(() => {
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, []);
+
     return (
         <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm overflow-y-auto"
+            className="fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-sm"
             onClick={onClose}
         >
-            <motion.div
-                initial={{ scale: 0.9, opacity: 0, y: 20 }}
-                animate={{ scale: 1, opacity: 1, y: 0 }}
-                exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                onClick={(e) => e.stopPropagation()}
-                className="bg-[#1A1A1C] border border-white/10 rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto relative shadow-2xl"
-            >
-                <button
-                    onClick={onClose}
-                    className="absolute top-4 right-4 p-2 bg-white/5 rounded-full hover:bg-white/10 transition-colors z-10"
+            <div className="min-h-full flex items-center justify-center p-4">
+                <motion.div
+                    initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                    animate={{ scale: 1, opacity: 1, y: 0 }}
+                    exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                    onClick={(e) => e.stopPropagation()}
+                    className="bg-[#1A1A1C] border border-white/10 rounded-2xl w-full max-w-4xl relative shadow-2xl my-8"
                 >
-                    <X size={20} className="text-white" />
-                </button>
+                    <button
+                        onClick={onClose}
+                        className="absolute top-4 right-4 p-2 bg-white/5 rounded-full hover:bg-white/10 transition-colors z-10"
+                    >
+                        <X size={20} className="text-white" />
+                    </button>
 
-                <div className="p-8 md:p-12">
-                    <div className="flex flex-col md:flex-row justify-between items-start gap-6 mb-8 border-b border-white/10 pb-8">
-                        <div>
-                            <span className="text-sm font-semibold tracking-wider text-green-400 uppercase mb-2 block">
-                                {course.level}
-                            </span>
-                            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">{course.title}</h2>
-                            <p className="text-gray-400 text-lg max-w-2xl">{course.shortDescription}</p>
+                    <div className="p-6 md:p-12">
+                        <div className="flex flex-col md:flex-row justify-between items-start gap-6 mb-8 border-b border-white/10 pb-8">
+                            <div>
+                                <span className="text-sm font-semibold tracking-wider text-green-400 uppercase mb-2 block">
+                                    {course.level}
+                                </span>
+                                <h2 className="text-2xl md:text-4xl font-bold text-white mb-4">{course.title}</h2>
+                                <p className="text-gray-400 text-base md:text-lg max-w-2xl">{course.shortDescription}</p>
+                            </div>
+                            <div className="flex flex-col items-end gap-4 w-full md:w-auto min-w-[200px]">
+                                <span className="text-2xl md:text-3xl font-bold text-white">{course.price}</span>
+                                <button className="w-full px-6 py-3 bg-white text-black font-bold rounded-xl hover:bg-gray-200 transition-colors">
+                                    Enroll Now
+                                </button>
+                            </div>
                         </div>
-                        <div className="flex flex-col items-end gap-4 min-w-[200px]">
-                            <span className="text-3xl font-bold text-white">{course.price}</span>
-                            <button className="w-full px-6 py-3 bg-white text-black font-bold rounded-xl hover:bg-gray-200 transition-colors">
-                                Enroll Now
-                            </button>
+
+                        <div className="space-y-10">
+                            <section>
+                                <h3 className="text-xl font-bold text-white mb-4">Overview</h3>
+                                <p className="text-gray-300 leading-relaxed">{course.fullDescription.overview}</p>
+                            </section>
+
+                            <div className="grid md:grid-cols-2 gap-10">
+                                <section>
+                                    <h3 className="text-xl font-bold text-white mb-4">What You Will Learn</h3>
+                                    <ul className="space-y-3">
+                                        {course.fullDescription.whatYouWillLearn.map((item, i) => (
+                                            <li key={i} className="flex items-start gap-3 text-gray-300">
+                                                <Check size={18} className="text-green-400 mt-1 shrink-0" />
+                                                <span>{item}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </section>
+
+                                <section>
+                                    <h3 className="text-xl font-bold text-white mb-4">Real Projects</h3>
+                                    <ul className="space-y-3">
+                                        {course.fullDescription.projects.map((item, i) => (
+                                            <li key={i} className="flex items-start gap-3 text-gray-300">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-2.5 shrink-0" />
+                                                <span>{item}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </section>
+                            </div>
+
+                            <div className="grid md:grid-cols-2 gap-10">
+                                <section>
+                                    <h3 className="text-xl font-bold text-white mb-4">Who This Is For</h3>
+                                    <ul className="space-y-3">
+                                        {course.fullDescription.whoIsThisFor.map((item, i) => (
+                                            <li key={i} className="flex items-start gap-3 text-gray-300">
+                                                <ChevronRight size={18} className="text-gray-500 mt-1 shrink-0" />
+                                                <span>{item}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </section>
+
+                                <section>
+                                    <h3 className="text-xl font-bold text-white mb-4">Outcome</h3>
+                                    <ul className="space-y-3">
+                                        {course.fullDescription.outcome.map((item, i) => (
+                                            <li key={i} className="flex items-start gap-3 text-gray-300">
+                                                <Check size={18} className="text-purple-400 mt-1 shrink-0" />
+                                                <span>{item}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </section>
+                            </div>
                         </div>
                     </div>
-
-                    <div className="space-y-10">
-                        <section>
-                            <h3 className="text-xl font-bold text-white mb-4">Overview</h3>
-                            <p className="text-gray-300 leading-relaxed">{course.fullDescription.overview}</p>
-                        </section>
-
-                        <div className="grid md:grid-cols-2 gap-10">
-                            <section>
-                                <h3 className="text-xl font-bold text-white mb-4">What You Will Learn</h3>
-                                <ul className="space-y-3">
-                                    {course.fullDescription.whatYouWillLearn.map((item, i) => (
-                                        <li key={i} className="flex items-start gap-3 text-gray-300">
-                                            <Check size={18} className="text-green-400 mt-1 shrink-0" />
-                                            <span>{item}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </section>
-
-                            <section>
-                                <h3 className="text-xl font-bold text-white mb-4">Real Projects</h3>
-                                <ul className="space-y-3">
-                                    {course.fullDescription.projects.map((item, i) => (
-                                        <li key={i} className="flex items-start gap-3 text-gray-300">
-                                            <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-2.5 shrink-0" />
-                                            <span>{item}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </section>
-                        </div>
-
-                        <div className="grid md:grid-cols-2 gap-10">
-                            <section>
-                                <h3 className="text-xl font-bold text-white mb-4">Who This Is For</h3>
-                                <ul className="space-y-3">
-                                    {course.fullDescription.whoIsThisFor.map((item, i) => (
-                                        <li key={i} className="flex items-start gap-3 text-gray-300">
-                                            <ChevronRight size={18} className="text-gray-500 mt-1 shrink-0" />
-                                            <span>{item}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </section>
-
-                            <section>
-                                <h3 className="text-xl font-bold text-white mb-4">Outcome</h3>
-                                <ul className="space-y-3">
-                                    {course.fullDescription.outcome.map((item, i) => (
-                                        <li key={i} className="flex items-start gap-3 text-gray-300">
-                                            <Check size={18} className="text-purple-400 mt-1 shrink-0" />
-                                            <span>{item}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </section>
-                        </div>
-                    </div>
-                </div>
-            </motion.div>
+                </motion.div>
+            </div>
         </motion.div>
     );
 }
@@ -427,7 +437,7 @@ export default function CoursesSection() {
                                         }}
                                         className="flex items-center text-sm font-medium text-white hover:text-green-400 transition-colors group/btn"
                                     >
-                                        <span>Learn more</span>
+                                        <span>Details</span>
                                         <span className="ml-2 group-hover/btn:translate-x-1 transition-transform">→</span>
                                     </button>
                                 </div>
