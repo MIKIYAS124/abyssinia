@@ -275,54 +275,63 @@ function CourseModal({ course, onClose }: { course: typeof courses[0], onClose: 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-sm"
+            className="fixed inset-0 z-[100] overflow-y-auto bg-black/90 backdrop-blur-md"
             onClick={onClose}
         >
-            <div className="min-h-full flex items-center justify-center p-4">
+            <div className="min-h-full flex items-center justify-center p-4 sm:p-6">
                 <motion.div
-                    initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                    initial={{ scale: 0.95, opacity: 0, y: 20 }}
                     animate={{ scale: 1, opacity: 1, y: 0 }}
-                    exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                    exit={{ scale: 0.95, opacity: 0, y: 20 }}
                     onClick={(e) => e.stopPropagation()}
-                    className="bg-[#1A1A1C] border border-white/10 rounded-2xl w-full max-w-4xl relative shadow-2xl my-8"
+                    className="bg-[#1A1A1C] border border-white/10 rounded-2xl w-full max-w-4xl relative shadow-2xl my-4 md:my-8 flex flex-col"
                 >
-                    <button
-                        onClick={onClose}
-                        className="absolute top-4 right-4 p-2 bg-white/5 rounded-full hover:bg-white/10 transition-colors z-10"
-                    >
-                        <X size={20} className="text-white" />
-                    </button>
+                    {/* Close Button - Sticky on mobile for better UX */}
+                    <div className="sticky top-0 right-0 z-10 flex justify-end p-4 pointer-events-none">
+                        <button
+                            onClick={onClose}
+                            className="p-2 bg-black/50 backdrop-blur-md border border-white/10 rounded-full hover:bg-white/10 transition-colors pointer-events-auto"
+                        >
+                            <X size={20} className="text-white" />
+                        </button>
+                    </div>
 
-                    <div className="p-6 md:p-12">
-                        <div className="flex flex-col md:flex-row justify-between items-start gap-6 mb-8 border-b border-white/10 pb-8">
-                            <div>
-                                <span className="text-sm font-semibold tracking-wider text-green-400 uppercase mb-2 block">
+                    <div className="px-6 pb-8 md:px-12 md:pb-12 -mt-14 md:mt-0">
+                        {/* Header Section */}
+                        <div className="flex flex-col md:flex-row justify-between items-start gap-6 mb-8 border-b border-white/10 pb-8 pt-12 md:pt-0">
+                            <div className="w-full md:w-auto">
+                                <span className="text-xs md:text-sm font-semibold tracking-wider text-green-400 uppercase mb-3 block">
                                     {course.level}
                                 </span>
-                                <h2 className="text-2xl md:text-4xl font-bold text-white mb-4">{course.title}</h2>
-                                <p className="text-gray-400 text-base md:text-lg max-w-2xl">{course.shortDescription}</p>
+                                <h2 className="text-2xl md:text-4xl font-bold text-white mb-4 pr-8 md:pr-0 leading-tight">{course.title}</h2>
+                                <p className="text-gray-400 text-base md:text-lg max-w-2xl leading-relaxed">{course.shortDescription}</p>
                             </div>
-                            <div className="flex flex-col items-end gap-4 w-full md:w-auto min-w-[200px]">
-                                <span className="text-2xl md:text-3xl font-bold text-white">{course.price}</span>
-                                <button className="w-full px-6 py-3 bg-white text-black font-bold rounded-xl hover:bg-gray-200 transition-colors">
+
+                            <div className="flex flex-col gap-4 w-full md:w-auto md:min-w-[200px] bg-white/5 md:bg-transparent p-4 md:p-0 rounded-xl md:rounded-none">
+                                <div className="flex md:flex-col justify-between items-center md:items-end">
+                                    <span className="text-gray-400 text-sm md:hidden">Price</span>
+                                    <span className="text-2xl md:text-3xl font-bold text-white">{course.price}</span>
+                                </div>
+                                <button className="w-full px-6 py-3.5 bg-white text-black font-bold rounded-xl hover:bg-gray-200 transition-colors text-sm md:text-base">
                                     Enroll Now
                                 </button>
                             </div>
                         </div>
 
-                        <div className="space-y-10">
+                        {/* Content Grid */}
+                        <div className="space-y-8 md:space-y-10">
                             <section>
-                                <h3 className="text-xl font-bold text-white mb-4">Overview</h3>
-                                <p className="text-gray-300 leading-relaxed">{course.fullDescription.overview}</p>
+                                <h3 className="text-lg md:text-xl font-bold text-white mb-3 md:mb-4">Overview</h3>
+                                <p className="text-gray-300 leading-relaxed text-sm md:text-base">{course.fullDescription.overview}</p>
                             </section>
 
-                            <div className="grid md:grid-cols-2 gap-10">
+                            <div className="grid md:grid-cols-2 gap-8 md:gap-10">
                                 <section>
-                                    <h3 className="text-xl font-bold text-white mb-4">What You Will Learn</h3>
+                                    <h3 className="text-lg md:text-xl font-bold text-white mb-3 md:mb-4">What You Will Learn</h3>
                                     <ul className="space-y-3">
                                         {course.fullDescription.whatYouWillLearn.map((item, i) => (
-                                            <li key={i} className="flex items-start gap-3 text-gray-300">
-                                                <Check size={18} className="text-green-400 mt-1 shrink-0" />
+                                            <li key={i} className="flex items-start gap-3 text-gray-300 text-sm md:text-base">
+                                                <Check size={18} className="text-green-400 mt-0.5 shrink-0" />
                                                 <span>{item}</span>
                                             </li>
                                         ))}
@@ -330,11 +339,11 @@ function CourseModal({ course, onClose }: { course: typeof courses[0], onClose: 
                                 </section>
 
                                 <section>
-                                    <h3 className="text-xl font-bold text-white mb-4">Real Projects</h3>
+                                    <h3 className="text-lg md:text-xl font-bold text-white mb-3 md:mb-4">Real Projects</h3>
                                     <ul className="space-y-3">
                                         {course.fullDescription.projects.map((item, i) => (
-                                            <li key={i} className="flex items-start gap-3 text-gray-300">
-                                                <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-2.5 shrink-0" />
+                                            <li key={i} className="flex items-start gap-3 text-gray-300 text-sm md:text-base">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-2 shrink-0" />
                                                 <span>{item}</span>
                                             </li>
                                         ))}
@@ -342,13 +351,13 @@ function CourseModal({ course, onClose }: { course: typeof courses[0], onClose: 
                                 </section>
                             </div>
 
-                            <div className="grid md:grid-cols-2 gap-10">
+                            <div className="grid md:grid-cols-2 gap-8 md:gap-10">
                                 <section>
-                                    <h3 className="text-xl font-bold text-white mb-4">Who This Is For</h3>
+                                    <h3 className="text-lg md:text-xl font-bold text-white mb-3 md:mb-4">Who This Is For</h3>
                                     <ul className="space-y-3">
                                         {course.fullDescription.whoIsThisFor.map((item, i) => (
-                                            <li key={i} className="flex items-start gap-3 text-gray-300">
-                                                <ChevronRight size={18} className="text-gray-500 mt-1 shrink-0" />
+                                            <li key={i} className="flex items-start gap-3 text-gray-300 text-sm md:text-base">
+                                                <ChevronRight size={18} className="text-gray-500 mt-0.5 shrink-0" />
                                                 <span>{item}</span>
                                             </li>
                                         ))}
@@ -356,11 +365,11 @@ function CourseModal({ course, onClose }: { course: typeof courses[0], onClose: 
                                 </section>
 
                                 <section>
-                                    <h3 className="text-xl font-bold text-white mb-4">Outcome</h3>
+                                    <h3 className="text-lg md:text-xl font-bold text-white mb-3 md:mb-4">Outcome</h3>
                                     <ul className="space-y-3">
                                         {course.fullDescription.outcome.map((item, i) => (
-                                            <li key={i} className="flex items-start gap-3 text-gray-300">
-                                                <Check size={18} className="text-purple-400 mt-1 shrink-0" />
+                                            <li key={i} className="flex items-start gap-3 text-gray-300 text-sm md:text-base">
+                                                <Check size={18} className="text-purple-400 mt-0.5 shrink-0" />
                                                 <span>{item}</span>
                                             </li>
                                         ))}
